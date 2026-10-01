@@ -1,0 +1,512 @@
+<title>한지우 편집실</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@300;500;700;800&family=IBM+Plex+Sans+KR:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: 12-column print grid on a quiet paper ground; works shown as real books on a shelf, scaled to their actual trim sizes. */
+:root {
+  --paper: #F2F3F1;
+  --surface: #E7E9E6;
+  --ink: #16181A;
+  --ink-2: #5A5F64;
+  --rule: #D3D7D4;
+  --accent: #2F4FD6;           /* riso medium blue */
+  --grid: rgba(47, 79, 214, .07);
+  --grid-line: rgba(47, 79, 214, .16);
+
+  --display: "Hahmlet", "Noto Serif KR", "Nanum Myeongjo", serif;
+  --body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --gutter: clamp(16px, 4vw, 48px);
+  --col-gap: clamp(16px, 2vw, 28px);
+
+  /* cover stock colours: physical objects, same in both themes */
+  --c-yeobaek: #ECEBE4;
+  --c-night: #1D2340;
+  --c-matter: #BDB9B0;
+  --c-route: #D9E85A;
+  --c-voice: #E6CFC8;
+  --c-report: #FAFAF8;
+  --c-ink: #191A1C;
+  --c-cream: #F3EFE2;
+  --c-lamp: #F2C94C;
+  --c-blue: #2F4FD6;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #111314;
+    --surface: #1A1D1F;
+    --ink: #E8E9E5;
+    --ink-2: #9AA0A5;
+    --rule: #2B2F32;
+    --accent: #8EA2FF;
+    --grid: rgba(142, 162, 255, .06);
+    --grid-line: rgba(142, 162, 255, .16);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #111314;
+  --surface: #1A1D1F;
+  --ink: #E8E9E5;
+  --ink-2: #9AA0A5;
+  --rule: #2B2F32;
+  --accent: #8EA2FF;
+  --grid: rgba(142, 162, 255, .06);
+  --grid-line: rgba(142, 162, 255, .16);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.75;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.mono { font-family: var(--mono); font-size: 12px; letter-spacing: .02em; font-variant-numeric: tabular-nums; }
+.label { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); }
+
+.wrap { max-width: 1240px; margin: 0 auto; padding-inline: var(--gutter); }
+.grid12 { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); }
+
+/* ---------- header ---------- */
+.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule);
+}
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; }
+.brand { font-family: var(--display); font-weight: 700; font-size: 16px; text-decoration: none; letter-spacing: -.01em; }
+.brand span { font-family: var(--mono); font-weight: 400; font-size: 11px; color: var(--ink-2); margin-left: 10px; letter-spacing: .08em; }
+.nav { display: flex; gap: clamp(14px, 3vw, 32px); align-items: center; }
+.nav a { font-size: 13px; text-decoration: none; color: var(--ink-2); transition: color .2s; }
+.nav a:hover { color: var(--ink); }
+.grid-btn {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .08em;
+  background: none; color: var(--ink-2); border: 1px solid var(--rule);
+  padding: 4px 9px; cursor: pointer; border-radius: 0;
+}
+.grid-btn[aria-pressed="true"] { color: var(--accent); border-color: var(--accent); }
+
+/* ---------- hero ---------- */
+.hero { padding-block: clamp(64px, 12vw, 152px) clamp(48px, 7vw, 88px); }
+.hero h1 {
+  grid-column: 1 / span 10;
+  font-family: var(--display); font-weight: 300;
+  font-size: clamp(2.3rem, 6.2vw, 5.4rem);
+  line-height: 1.16; letter-spacing: -.035em;
+  margin: 0; text-wrap: balance;
+}
+.hero h1 em { font-style: normal; color: var(--accent); font-weight: 500; }
+.hero .lede {
+  grid-column: 7 / span 5;
+  margin: clamp(36px, 5vw, 64px) 0 0; max-width: 30em; color: var(--ink-2);
+}
+.facts { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 12px 56px; margin: clamp(48px, 6vw, 80px) 0 0; padding-top: 18px; border-top: 1px solid var(--rule); }
+.facts div { display: flex; flex-direction: column; gap: 2px; }
+.facts dt { margin: 0; }
+.facts dd { margin: 0; font-size: 14px; }
+
+/* ---------- section head ---------- */
+.sec { padding-block: clamp(56px, 8vw, 112px); border-top: 1px solid var(--rule); }
+.sec-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: clamp(36px, 5vw, 64px); }
+.sec-head h2 { font-family: var(--display); font-weight: 500; font-size: clamp(1.5rem, 2.6vw, 2rem); letter-spacing: -.02em; margin: 0; }
+
+/* ---------- works ---------- */
+.works { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(56px, 6vw, 88px) var(--col-gap); }
+.work { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+.shelf {
+  aspect-ratio: 230 / 305; max-width: 100%;
+  display: flex; align-items: flex-end;
+  border-bottom: 1px solid var(--ink);
+  position: relative;
+}
+.shelf::after { /* largest trim on the page = 230mm; covers scale against it */
+  content: attr(data-size); position: absolute; right: 0; bottom: -20px;
+  font-family: var(--mono); font-size: 10px; color: var(--ink-2); letter-spacing: .06em;
+}
+.cover {
+  width: calc(var(--w) / 230 * 100%);
+  aspect-ratio: var(--w) / var(--h);
+  max-width: 100%;
+  position: relative; overflow: hidden;
+  container-type: inline-size;
+  box-shadow: 0 1px 0 rgba(0,0,0,.06), 0 12px 24px -14px rgba(0,0,0,.35);
+  transform-origin: 0 100%;
+  transition: transform .5s cubic-bezier(.2,.7,.2,1);
+}
+.cover::before { /* spine crease */
+  content: ""; position: absolute; inset: 0 auto 0 3.5%; width: 1px; background: rgba(0,0,0,.12); z-index: 2;
+}
+.work:hover .cover { transform: translateY(-6px) rotate(-1.2deg); }
+
+.cap { display: flex; flex-direction: column; gap: 8px; padding-top: 6px; }
+.cap .meta { display: flex; justify-content: space-between; gap: 12px; color: var(--ink-2); }
+.cap h3 { font-family: var(--display); font-weight: 500; font-size: 19px; line-height: 1.4; letter-spacing: -.015em; margin: 0; text-wrap: balance; }
+.cap p { margin: 0; color: var(--ink-2); font-size: 14px; line-height: 1.7; }
+.spec { display: grid; grid-template-columns: auto 1fr; gap: 3px 14px; margin: 8px 0 0; padding-top: 12px; border-top: 1px dotted var(--rule); }
+.spec dt { color: var(--ink-2); }
+.spec dd { margin: 0; }
+
+/* cover 1 — 여백 */
+.c1 { background: var(--c-yeobaek); color: var(--c-ink); }
+.c1 .t { position: absolute; left: 12%; top: 9%; font-family: var(--display); font-weight: 700; font-size: 11cqi; letter-spacing: -.03em; line-height: 1; }
+.c1 .s { position: absolute; left: 12%; top: calc(9% + 14cqi); font-family: var(--mono); font-size: 3.4cqi; letter-spacing: .06em; }
+.c1 .r { position: absolute; left: 12%; right: 10%; top: 64%; height: 1px; background: var(--c-blue); }
+.c1 .h { position: absolute; right: 10%; bottom: 7%; font-family: var(--display); font-size: 4.2cqi; letter-spacing: .3em; }
+
+/* cover 2 — 도시의 밤 */
+.c2 { background: var(--c-night); color: var(--c-cream); }
+.c2::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 46%;
+  background-image: radial-gradient(circle, var(--c-lamp) 0 1px, transparent 1.6px);
+  background-size: 7cqi 9cqi; opacity: .75;
+  -webkit-mask-image: linear-gradient(to top, #000 30%, transparent);
+          mask-image: linear-gradient(to top, #000 30%, transparent);
+}
+.c2 .t { position: absolute; right: 12%; top: 9%; writing-mode: vertical-rl; font-family: var(--display); font-weight: 500; font-size: 9cqi; letter-spacing: .08em; line-height: 1.3; }
+.c2 .a { position: absolute; left: 12%; top: 9%; writing-mode: vertical-rl; font-size: 3.6cqi; letter-spacing: .2em; opacity: .8; }
+
+/* cover 3 — 물성의 시간 */
+.c3 { background: var(--c-matter); color: var(--c-ink); }
+.c3 .big { position: absolute; left: -4%; bottom: -15%; font-family: var(--display); font-weight: 800; font-size: 58cqi; line-height: 1; letter-spacing: -.06em; }
+.c3 .s { position: absolute; left: 9%; top: 7%; right: 9%; display: flex; justify-content: space-between; font-family: var(--mono); font-size: 3cqi; letter-spacing: .04em; line-height: 1.5; }
+
+/* cover 4 — ROUTE */
+.c4 { background: var(--c-route); color: var(--c-ink); }
+.c4 .t { position: absolute; left: 7%; top: 5%; font-family: var(--body); font-weight: 600; font-size: 30cqi; line-height: .86; letter-spacing: -.05em; }
+.c4 .s { position: absolute; left: 8%; right: 8%; bottom: 6%; display: flex; justify-content: space-between; font-family: var(--mono); font-size: 3.4cqi; border-top: 1px solid var(--c-ink); padding-top: 2.5cqi; }
+
+/* cover 5 — 낮은 목소리 */
+.c5 { background: var(--c-voice); color: var(--c-ink); }
+.c5 .dot { position: absolute; left: 50%; top: 38%; width: 5cqi; height: 5cqi; margin-left: -2.5cqi; border-radius: 50%; border: 1px solid var(--c-ink); }
+.c5 .t { position: absolute; left: 0; right: 0; bottom: 18%; text-align: center; font-family: var(--display); font-weight: 500; font-size: 6.4cqi; letter-spacing: .12em; }
+.c5 .n { position: absolute; left: 0; right: 0; bottom: 10%; text-align: center; font-family: var(--mono); font-size: 3.6cqi; }
+
+/* cover 6 — 연차보고서 */
+.c6 { background: var(--c-report); color: var(--c-ink); }
+.c6 .t { position: absolute; left: 10%; top: 8%; font-family: var(--display); font-weight: 700; font-size: 8cqi; line-height: 1.25; letter-spacing: -.02em; }
+.c6 .o { position: absolute; left: 10%; top: calc(8% + 24cqi); font-size: 3.4cqi; }
+.c6 .bars { position: absolute; left: 10%; right: 10%; bottom: 0; height: 46%; display: flex; align-items: flex-end; gap: 3cqi; }
+.c6 .bars i { flex: 1; background: var(--c-blue); display: block; }
+
+/* ---------- about ---------- */
+.about .grid12 { row-gap: 40px; }
+.about .side { grid-column: 1 / span 4; }
+.about .main { grid-column: 5 / span 8; min-width: 0; }
+.about .main p { margin: 0 0 1.1em; max-width: 38em; font-size: 16px; }
+.about .main p:first-child { font-family: var(--display); font-size: clamp(1.25rem, 2vw, 1.5rem); line-height: 1.6; letter-spacing: -.015em; font-weight: 300; }
+.cv { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px var(--col-gap); margin-top: 48px; }
+.cv h3 { margin: 0 0 14px; }
+.cv ul { list-style: none; margin: 0; padding: 0; }
+.cv li { display: grid; grid-template-columns: 92px 1fr; gap: 12px; padding: 10px 0; border-top: 1px solid var(--rule); font-size: 14px; line-height: 1.6; }
+.cv li .mono { color: var(--ink-2); padding-top: 2px; }
+
+/* ---------- contact ---------- */
+.contact .grid12 { row-gap: 32px; align-items: end; }
+.contact .main { grid-column: 1 / span 8; min-width: 0; }
+.contact .side { grid-column: 9 / span 4; color: var(--ink-2); font-size: 14px; }
+.contact .side p { margin: 0 0 12px; }
+.mail-row { display: flex; align-items: baseline; gap: 20px; flex-wrap: wrap; }
+.mail {
+  font-family: var(--display); font-weight: 300;
+  font-size: clamp(1.8rem, 5.4vw, 4.4rem); letter-spacing: -.035em; line-height: 1.15;
+  text-decoration: none; user-select: all; overflow-wrap: anywhere;
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-size: 0 2px; background-repeat: no-repeat; background-position: 0 100%;
+  transition: background-size .4s;
+}
+.mail:hover { background-size: 100% 2px; }
+.copy {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .08em;
+  background: var(--ink); color: var(--paper); border: 0; padding: 7px 12px; cursor: pointer;
+}
+.copy.done { background: var(--accent); }
+
+/* ---------- colophon ---------- */
+.colophon { border-top: 1px solid var(--rule); padding-block: 28px 40px; }
+.colophon .wrap { display: flex; justify-content: space-between; gap: 12px 32px; flex-wrap: wrap; color: var(--ink-2); }
+
+/* ---------- grid overlay ---------- */
+.overlay { position: fixed; inset: 0; z-index: 50; pointer-events: none;
+  background-image: repeating-linear-gradient(to bottom, transparent 0 7px, var(--grid-line) 7px 8px); }
+.overlay .wrap, .overlay .grid12 { height: 100%; }
+.overlay .grid12 > i { background: var(--grid); border-inline: 1px solid var(--grid-line); }
+
+/* ---------- responsive ---------- */
+@media (max-width: 960px) {
+  .works { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hero h1 { grid-column: 1 / -1; }
+  .hero .lede { grid-column: 4 / -1; }
+  .about .side, .about .main, .contact .main, .contact .side { grid-column: 1 / -1; }
+}
+@media (max-width: 600px) {
+  .works { grid-template-columns: minmax(0, 1fr); }
+  .shelf { width: 82%; }
+  .hero .lede { grid-column: 1 / -1; }
+  .cv { grid-template-columns: minmax(0, 1fr); }
+  .brand span, .nav .hide-sm { display: none; }
+  .facts { gap: 12px 32px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .cover, .mail { transition: none; }
+  .work:hover .cover { transform: none; }
+}
+</style>
+
+<div class="overlay" id="overlay" hidden aria-hidden="true">
+  <div class="wrap"><div class="grid12"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top">한지우<span>EDITORIAL DESIGN</span></a>
+    <nav class="nav" aria-label="주요 메뉴">
+      <a href="#works">작업</a>
+      <a href="#about">소개</a>
+      <a href="#contact">연락</a>
+      <button class="grid-btn" id="gridBtn" type="button" aria-pressed="false" title="단축키 G">GRID</button>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap grid12">
+      <h1>글이 <em>머무는</em> 자리를 설계합니다.</h1>
+      <p class="lede">책과 잡지, 전시 도록을 만드는 편집디자이너 한지우입니다. 원고를 오래 읽고, 판형과 종이부터 정합니다. 읽는 사람이 디자인을 의식하지 않고 끝까지 읽어 내려가는 페이지를 목표로 합니다.</p>
+      <dl class="facts">
+        <div><dt class="label">Based in</dt><dd>서울 마포</dd></div>
+        <div><dt class="label">Since</dt><dd>2016</dd></div>
+        <div><dt class="label">Fields</dt><dd>단행본 · 정기간행물 · 도록 · 브랜드 인쇄물</dd></div>
+        <div><dt class="label">Available</dt><dd>2027년 1월부터</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="sec" id="works">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>선별 작업</h2>
+        <span class="label">2024 — 2026 · 판형 실제 비율로 표시</span>
+      </div>
+
+      <div class="works">
+        <article class="work">
+          <div class="shelf" data-size="170 × 240">
+            <div class="cover c1" style="--w:170;--h:240" aria-hidden="true">
+              <span class="t">여백</span><span class="s">2026 가을 · 통권 38호</span><span class="r"></span><span class="h">餘白</span>
+            </div>
+          </div>
+          <div class="cap">
+            <div class="meta mono"><span>문예지</span><span>2026</span></div>
+            <h3>계간 『여백』 리디자인</h3>
+            <p>창간 10년 차 문예지의 판형과 본문 그리드를 새로 짰습니다. 시와 산문이 한 권에서 서로 다른 호흡을 갖도록 두 개의 본문 체계를 만들었습니다.</p>
+            <dl class="spec mono">
+              <dt>판형</dt><dd>170 × 240 mm</dd>
+              <dt>쪽수</dt><dd>248p</dd>
+              <dt>제본</dt><dd>무선철</dd>
+              <dt>용지</dt><dd>표지 랑데부 240g / 본문 이라이트 80g</dd>
+            </dl>
+          </div>
+        </article>
+
+        <article class="work">
+          <div class="shelf" data-size="128 × 188">
+            <div class="cover c2" style="--w:128;--h:188" aria-hidden="true">
+              <span class="a">에세이 · 정해온</span><span class="t">도시의 밤을<br>걷는 법</span>
+            </div>
+          </div>
+          <div class="cap">
+            <div class="meta mono"><span>단행본</span><span>2025</span></div>
+            <h3>『도시의 밤을 걷는 법』</h3>
+            <p>밤 산책을 다룬 에세이. 세로쓰기 제목과 창문 불빛 패턴의 별색 실크 인쇄로, 손에 쥐었을 때 밤의 질감이 먼저 오도록 했습니다.</p>
+            <dl class="spec mono">
+              <dt>판형</dt><dd>128 × 188 mm</dd>
+              <dt>쪽수</dt><dd>312p</dd>
+              <dt>제본</dt><dd>양장 · 실크 별색 1도</dd>
+              <dt>용지</dt><dd>마카롱 미드나잇 / 그린라이트 80g</dd>
+            </dl>
+          </div>
+        </article>
+
+        <article class="work">
+          <div class="shelf" data-size="230 × 297">
+            <div class="cover c3" style="--w:230;--h:297" aria-hidden="true">
+              <span class="s"><span>물성의 시간<br>Time of Matter</span><span>2025.4.18<br>—7.20</span></span><span class="big">물성</span>
+            </div>
+          </div>
+          <div class="cap">
+            <div class="meta mono"><span>전시 도록</span><span>2025</span></div>
+            <h3>『물성의 시간』 전시 도록</h3>
+            <p>공예 작가 12인의 단체전 도록. 작품 사진이 펼침면 중앙에서 끊기지 않도록 사철 누드 제본을 택하고, 도판과 비평문의 종이를 달리했습니다.</p>
+            <dl class="spec mono">
+              <dt>판형</dt><dd>230 × 297 mm</dd>
+              <dt>쪽수</dt><dd>196p</dd>
+              <dt>제본</dt><dd>사철 누드 제본</dd>
+              <dt>용지</dt><dd>도판 아르떼 130g / 글 문켄 퓨어 100g</dd>
+            </dl>
+          </div>
+        </article>
+
+        <article class="work">
+          <div class="shelf" data-size="210 × 280">
+            <div class="cover c4" style="--w:210;--h:280" aria-hidden="true">
+              <span class="t">RO<br>UTE</span><span class="s"><span>Vol. 03</span><span>섬 Island</span></span>
+            </div>
+          </div>
+          <div class="cap">
+            <div class="meta mono"><span>브랜드 저널</span><span>2025</span></div>
+            <h3>여행 브랜드 저널 『ROUTE』 3호</h3>
+            <p>매 호 한 장소를 다루는 브랜드 저널의 아트디렉션. 형광 별색 하나와 먹 1도로 제작비를 줄이고, 호마다 표지 별색만 바꾸는 시스템을 설계했습니다.</p>
+            <dl class="spec mono">
+              <dt>판형</dt><dd>210 × 280 mm</dd>
+              <dt>쪽수</dt><dd>144p</dd>
+              <dt>제본</dt><dd>PUR 무선철</dd>
+              <dt>인쇄</dt><dd>먹 + 형광 별색 2도</dd>
+            </dl>
+          </div>
+        </article>
+
+        <article class="work">
+          <div class="shelf" data-size="115 × 190">
+            <div class="cover c5" style="--w:115;--h:190" aria-hidden="true">
+              <span class="dot"></span><span class="t">낮은 목소리</span><span class="n">04</span>
+            </div>
+          </div>
+          <div class="cap">
+            <div class="meta mono"><span>시집 시리즈</span><span>2024</span></div>
+            <h3>시인선 〈낮은 목소리〉 1–6권</h3>
+            <p>신인 시인 여섯 명의 첫 시집 시리즈. 표지는 같은 구조를 유지하고 색과 원의 위치만 바꿔, 서가에 꽂았을 때 한 묶음으로 읽히게 했습니다.</p>
+            <dl class="spec mono">
+              <dt>판형</dt><dd>115 × 190 mm</dd>
+              <dt>쪽수</dt><dd>각 120p</dd>
+              <dt>제본</dt><dd>무선철 · 날개 80mm</dd>
+              <dt>용지</dt><dd>컬러플랜 6종 / 클라우드 80g</dd>
+            </dl>
+          </div>
+        </article>
+
+        <article class="work">
+          <div class="shelf" data-size="200 × 260">
+            <div class="cover c6" style="--w:200;--h:260" aria-hidden="true">
+              <span class="t">2025<br>연차보고서</span><span class="o">재단법인 들풀</span>
+              <span class="bars"><i style="height:38%"></i><i style="height:52%"></i><i style="height:47%"></i><i style="height:71%"></i><i style="height:100%"></i></span>
+            </div>
+          </div>
+          <div class="cap">
+            <div class="meta mono"><span>연차보고서</span><span>2026</span></div>
+            <h3>재단법인 들풀 2025 연차보고서</h3>
+            <p>숫자가 많은 보고서를 끝까지 읽히게 만드는 작업. 표와 그래프 규칙을 하나의 체계로 정리하고, 사업별 이야기를 인터뷰 지면으로 풀었습니다.</p>
+            <dl class="spec mono">
+              <dt>판형</dt><dd>200 × 260 mm</dd>
+              <dt>쪽수</dt><dd>88p</dd>
+              <dt>제본</dt><dd>PUR 무선철</dd>
+              <dt>용지</dt><dd>표지 반누보 250g / 본문 미색 모조 100g</dd>
+            </dl>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec about" id="about">
+    <div class="wrap grid12">
+      <div class="side"><h2 class="label" style="margin:0">소개</h2></div>
+      <div class="main">
+        <p>원고를 가장 먼저, 가장 오래 읽는 사람이 편집디자이너라고 생각합니다.</p>
+        <p>출판사 디자인팀에서 4년간 단행본과 잡지를 만들었고, 2022년부터 1인 스튜디오 ‘한지우 편집실’을 운영하고 있습니다. 판형과 종이, 제본 방식까지 기획 단계에서 함께 정하는 작업을 선호하며, 인쇄 감리에는 직접 참여합니다.</p>
+        <p>한 권의 책을 만드는 일 외에도, 정기간행물과 시리즈처럼 오래 이어지는 디자인 체계를 만드는 데 관심이 많습니다.</p>
+
+        <div class="cv">
+          <div>
+            <h3 class="label">경력</h3>
+            <ul>
+              <li><span class="mono">2022 —</span><span>한지우 편집실 운영</span></li>
+              <li><span class="mono">2018 — 22</span><span>도서출판 물결 디자인팀</span></li>
+              <li><span class="mono">2016 — 18</span><span>스튜디오 낱장 디자이너</span></li>
+              <li><span class="mono">2024 —</span><span>대학 시각디자인과 편집디자인 강의</span></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="label">할 수 있는 일</h3>
+            <ul>
+              <li><span class="mono">기획</span><span>판형 · 종이 · 제본 · 제작비 설계</span></li>
+              <li><span class="mono">디자인</span><span>표지, 본문 그리드, 서체 체계</span></li>
+              <li><span class="mono">시스템</span><span>정기간행물 · 시리즈 가이드라인</span></li>
+              <li><span class="mono">제작</span><span>인쇄 사양서 작성, 인쇄 감리</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec contact" id="contact">
+    <div class="wrap grid12">
+      <div class="main">
+        <p class="label" style="margin:0 0 18px">새 프로젝트 문의</p>
+        <div class="mail-row">
+          <a class="mail" id="mail" href="mailto:hello@example.com">hello@example.com</a>
+          <button class="copy" id="copyBtn" type="button">COPY</button>
+        </div>
+      </div>
+      <div class="side">
+        <p>원고 분량, 희망 판형, 출간 일정을 함께 알려주시면 견적과 일정을 빠르게 회신드립니다.</p>
+        <p class="mono">Instagram @hanjiwoo.edit</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="colophon">
+  <div class="wrap mono">
+    <span>© 2026 한지우 편집실</span>
+    <span>본문 IBM Plex Sans KR · 제목 Hahmlet · 12단 그리드 · 기준선 8px</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var btn = document.getElementById('gridBtn');
+  var overlay = document.getElementById('overlay');
+  function toggle() {
+    overlay.hidden = !overlay.hidden;
+    btn.setAttribute('aria-pressed', String(!overlay.hidden));
+  }
+  btn.addEventListener('click', toggle);
+  document.addEventListener('keydown', function (e) {
+    var tag = (e.target && e.target.tagName) || '';
+    if ((e.key === 'g' || e.key === 'G') && !e.metaKey && !e.ctrlKey && !e.altKey && !/INPUT|TEXTAREA/.test(tag)) toggle();
+  });
+
+  var copyBtn = document.getElementById('copyBtn');
+  var mail = document.getElementById('mail');
+  copyBtn.addEventListener('click', function () {
+    var text = mail.textContent;
+    function done() {
+      copyBtn.textContent = 'COPIED';
+      copyBtn.classList.add('done');
+      setTimeout(function () { copyBtn.textContent = 'COPY'; copyBtn.classList.remove('done'); }, 1600);
+    }
+    function fallback() {
+      var r = document.createRange(); r.selectNodeContents(mail);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+    }
+    try {
+      navigator.clipboard.writeText(text).then(done, fallback);
+    } catch (err) { fallback(); }
+  });
+})();
+</script>
